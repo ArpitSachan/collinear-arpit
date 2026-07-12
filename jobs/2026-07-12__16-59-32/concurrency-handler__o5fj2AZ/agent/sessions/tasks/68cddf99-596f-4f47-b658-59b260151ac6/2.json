@@ -1,0 +1,8 @@
+{
+  "id": "2",
+  "subject": "Reproduce the drift under concurrent load",
+  "description": "Write a repro script and confirm both directions of drift",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "3",
+  "subject": "Fix inventory service",
+  "description": "Diagnose root causes and implement fixes in store/",
+  "status": "in_progress",
+  "blocks": [],
+  "blockedBy": []
+}

@@ -1,0 +1,9 @@
+{
+  "id": "3",
+  "subject": "Implement fix in store/",
+  "description": "Fix reserve() idempotency race, add qty validation, add reorder_snapshot() using safety_stock_floors. Preserve public API/throughput.",
+  "activeForm": "Implementing fix",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

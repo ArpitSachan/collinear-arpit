@@ -1,0 +1,14 @@
+# Worker-pool autoscaler log — export for the incident window
+# Friday 2026-07-10, 13:58-14:12 UTC
+2026-07-10T13:58:04Z autoscaler: queue_depth=140 workers=8 (steady-state)
+2026-07-10T13:59:47Z autoscaler: queue_depth=610 workers=8 -> scale-up triggered
+2026-07-10T14:00:02Z autoscaler: workers=24
+2026-07-10T14:00:41Z autoscaler: queue_depth=1980 workers=24 -> scale-up triggered
+2026-07-10T14:01:10Z autoscaler: workers=64
+2026-07-10T14:01:55Z autoscaler: queue_depth=3400 workers=64 -> scale-up triggered
+2026-07-10T14:02:20Z autoscaler: workers=96
+2026-07-10T14:02:35Z autoscaler: queue_depth=3650 workers=96 (peak observed this window)
+2026-07-10T14:07:12Z autoscaler: queue_depth=310 workers=96 -> scale-down triggered
+2026-07-10T14:08:00Z autoscaler: workers=32
+2026-07-10T14:11:44Z autoscaler: queue_depth=95 workers=32 -> scale-down triggered
+2026-07-10T14:12:10Z autoscaler: workers=8 (steady-state resumed)

@@ -1,0 +1,1 @@
+DOWNSTREAM_CALL_SEC = 0.02  # Simulated latency for demo

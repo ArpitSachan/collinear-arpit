@@ -1,0 +1,12 @@
+{
+    "task": {
+        "path": "concurrency-handler"
+    },
+    "trial_name": "concurrency-handler__PTJ9sMf",
+    "trials_dir": "jobs/2026-07-12__16-51-35",
+    "artifacts": [
+        "/app/REPORT.md",
+        "/app/store/inventory.py"
+    ],
+    "job_id": "6fd7cc23-c6ae-4cc3-9fab-be4e15a38397"
+}

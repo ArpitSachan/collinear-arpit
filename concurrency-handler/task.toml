@@ -1,0 +1,30 @@
+schema_version = "1.3"
+
+[task]
+name = "collinear-arpit/concurrency-handler"
+description = "Diagnose and fix a concurrency bug in a stock reservation service"
+authors = [{ name = "Arpit Sachan", email = "arpitsachan46@gmail.com" }]
+keywords = ["concurrency", "race-condition", "debugging", "python", "systems"]
+
+[metadata]
+author_name = "Arpit Sachan"
+author_email = "arpitsachan46@gmail.com"
+difficulty = "hard"
+category = "coding-systems"
+tags = ["concurrency", "race-condition", "idempotency", "debugging", "verification-discipline"]
+
+[verifier]
+timeout_sec = 600.0
+network_mode = "public"
+
+[agent]
+timeout_sec = 1200.0
+network_mode = "public"
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 2
+memory_mb = 2048
+storage_mb = 10240
+gpus = 0
+network_mode = "public"
