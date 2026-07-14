@@ -1,0 +1,8 @@
+{
+  "id": "3",
+  "subject": "Fix concurrency + idempotency bug",
+  "description": "Fix reserve() so it's safe under concurrent redelivery without serializing entire load",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

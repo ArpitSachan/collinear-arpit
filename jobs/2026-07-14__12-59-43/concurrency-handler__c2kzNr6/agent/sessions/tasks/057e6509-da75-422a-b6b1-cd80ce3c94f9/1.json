@@ -1,0 +1,8 @@
+{
+  "id": "1",
+  "subject": "Investigate ops/ artifacts",
+  "description": "Read autoscaler_log.txt, safety_stock_floors.json, system_of_record_snapshot.json",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

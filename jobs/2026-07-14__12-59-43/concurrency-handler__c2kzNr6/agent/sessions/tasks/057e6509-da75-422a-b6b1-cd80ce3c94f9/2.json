@@ -1,0 +1,8 @@
+{
+  "id": "2",
+  "subject": "Analyze data seeds and reproduce",
+  "description": "Check initial_inventory.json and jobs_seed.jsonl, then repro drift",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

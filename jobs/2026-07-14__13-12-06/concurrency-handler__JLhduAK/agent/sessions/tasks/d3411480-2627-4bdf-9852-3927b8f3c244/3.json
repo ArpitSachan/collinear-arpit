@@ -1,0 +1,8 @@
+{
+  "id": "3",
+  "subject": "Diagnose under-count (lower than expected) concurrency bug",
+  "description": "Only reproduces at high concurrency. Analyze reserve() locking around idempotency cache and downstream call.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

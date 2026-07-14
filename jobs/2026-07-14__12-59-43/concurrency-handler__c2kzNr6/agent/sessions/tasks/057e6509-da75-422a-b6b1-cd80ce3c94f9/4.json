@@ -1,0 +1,8 @@
+{
+  "id": "4",
+  "subject": "Diagnose \"higher-than-expected\" drift",
+  "description": "Reproduces at 1 worker — likely reorder_snapshot / safety floor / initial snapshot mismatch, not concurrency",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

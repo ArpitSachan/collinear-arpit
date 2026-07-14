@@ -1,0 +1,16 @@
+{
+    "task": {
+        "path": "concurrency-handler"
+    },
+    "trial_name": "concurrency-handler__c2kzNr6",
+    "trials_dir": "jobs/2026-07-14__12-59-43",
+    "agent": {
+        "name": "claude-code",
+        "model_name": "claude-opus-4-7"
+    },
+    "artifacts": [
+        "/app/REPORT.md",
+        "/app/store/inventory.py"
+    ],
+    "job_id": "13cdc3b0-697f-49cf-86dd-acf04cba5088"
+}

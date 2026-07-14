@@ -1,0 +1,63 @@
+{
+    "id": "3f6d5b92-9d5f-46ee-9bd7-cad95d318d6e",
+    "started_at": "2026-07-14T13:12:07.817973",
+    "updated_at": "2026-07-14T13:20:46.587386",
+    "finished_at": "2026-07-14T13:20:46.587386",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 0,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "claude-code__claude-opus-4-7__adhoc": {
+                "n_trials": 1,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "artifact_quality": 1.0,
+                        "constraint_satisfaction": 0.5,
+                        "functional_correctness": 1.0,
+                        "overall": 0.875,
+                        "robustness": 1.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "overall": {
+                        "0.875": [
+                            "concurrency-handler__JLhduAK"
+                        ]
+                    },
+                    "functional_correctness": {
+                        "1.0": [
+                            "concurrency-handler__JLhduAK"
+                        ]
+                    },
+                    "constraint_satisfaction": {
+                        "0.5": [
+                            "concurrency-handler__JLhduAK"
+                        ]
+                    },
+                    "robustness": {
+                        "1.0": [
+                            "concurrency-handler__JLhduAK"
+                        ]
+                    },
+                    "artifact_quality": {
+                        "1.0": [
+                            "concurrency-handler__JLhduAK"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        },
+        "n_input_tokens": 2553813,
+        "n_cache_tokens": 2522917,
+        "n_output_tokens": 24439,
+        "cost_usd": 2.06546975
+    }
+}

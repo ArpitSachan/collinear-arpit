@@ -1,0 +1,8 @@
+{
+  "id": "4",
+  "subject": "Build reproducer for both drift symptoms",
+  "description": "Write a script that replays jobs and shows both drift directions. Must be reproducible before and after fix.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

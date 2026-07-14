@@ -1,0 +1,8 @@
+{
+  "id": "6",
+  "subject": "Write REPORT.md with root cause and evidence",
+  "description": "Explain root causes, why tests missed it, what changed, how verified.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

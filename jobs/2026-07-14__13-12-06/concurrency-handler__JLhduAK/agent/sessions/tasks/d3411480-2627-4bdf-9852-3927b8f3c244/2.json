@@ -1,0 +1,8 @@
+{
+  "id": "2",
+  "subject": "Diagnose over-count (higher than expected) root cause",
+  "description": "Reproduces even at 1 worker → not concurrency. Likely related to snapshots/safety stock or a code path outside the lock.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

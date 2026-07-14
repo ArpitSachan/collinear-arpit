@@ -1,0 +1,118 @@
+{
+    "id": "166102a6-1617-4ffb-aa8d-b40a2bee463d",
+    "task_name": "collinear-arpit/concurrency-handler",
+    "trial_name": "concurrency-handler__g9gkNmt",
+    "trial_uri": "file:///Users/equipp/Desktop/osc/collinear/collinear-arpit/jobs/2026-07-14__13-20-54/concurrency-handler__g9gkNmt",
+    "task_id": {
+        "path": "concurrency-handler"
+    },
+    "source": null,
+    "task_checksum": "d1d433e1dfe57134080a08e459dee78f902bffb51d4e3f3b435831f31eec7e8f",
+    "config": {
+        "task": {
+            "path": "concurrency-handler",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "concurrency-handler__g9gkNmt",
+        "trials_dir": "jobs/2026-07-14__13-20-54",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "codex",
+            "import_path": null,
+            "model_name": "gpt-5.5",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {},
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [
+            "/app/REPORT.md",
+            "/app/store/inventory.py"
+        ],
+        "extra_instruction_paths": [],
+        "job_id": "0e30f0f6-3dea-4fe2-b1bc-3d18d2dec58a"
+    },
+    "agent_info": {
+        "name": "codex",
+        "version": "0.144.4",
+        "model_info": {
+            "name": "gpt-5.5",
+            "provider": null
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 319321,
+        "n_cache_tokens": 276352,
+        "n_output_tokens": 11027,
+        "cost_usd": 0.6838310000000001,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "overall": 1.0,
+            "functional_correctness": 1.0,
+            "constraint_satisfaction": 1.0,
+            "robustness": 1.0,
+            "artifact_quality": 1.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-07-14T07:50:55.061389Z",
+    "finished_at": "2026-07-14T07:54:48.692972Z",
+    "environment_setup": {
+        "started_at": "2026-07-14T07:50:55.109337Z",
+        "finished_at": "2026-07-14T07:51:00.803191Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-07-14T07:51:00.803597Z",
+        "finished_at": "2026-07-14T07:51:36.970128Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-07-14T07:51:36.979323Z",
+        "finished_at": "2026-07-14T07:54:37.625659Z"
+    },
+    "verifier": {
+        "started_at": "2026-07-14T07:54:41.355227Z",
+        "finished_at": "2026-07-14T07:54:45.491217Z"
+    },
+    "step_results": null
+}

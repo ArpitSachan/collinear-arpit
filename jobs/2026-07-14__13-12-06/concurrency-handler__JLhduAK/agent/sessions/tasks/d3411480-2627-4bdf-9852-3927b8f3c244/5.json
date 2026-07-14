@@ -1,0 +1,8 @@
+{
+  "id": "5",
+  "subject": "Implement fix in store/ preserving throughput",
+  "description": "Fix must not serialize downstream call, must preserve idempotency, must handle safety stock properly, must not break existing tests.",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}
