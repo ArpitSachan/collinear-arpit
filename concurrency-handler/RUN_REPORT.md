@@ -4,12 +4,12 @@
 > bugs (redelivery double-charge, malformed-qty inflation) plus a missing
 > `reorder_snapshot()` whose natural first fix (one flat safety-stock
 > constant) is wrong for one SKU — fixing that requires revising the
-> first fix, not patching around it. **A real Harbor CLI run against
-> Claude Opus 4.7 has been completed against this exact version** (job
-> `2026-07-12__17-30-20`) and produced a clean, non-infra-confounded
-> failure: `overall = 0.875`, with bugs 1+2 fixed correctly (in fact more
-> robustly than the oracle) but bug 3/4 failing verification. Full
-> breakdown below.
+> first fix, not patching around it. **Three independent Claude Opus 4.7
+> trials and two independent GPT-5.5 (`codex`) trials have now been run**
+> against this exact version. Opus fails the same way every time
+> (`overall = 0.875` — bugs 1+2 fixed, bug 3/4 fails verification);
+> GPT-5.5 passes cleanly both times (`overall = 1.0`). Full breakdown,
+> including the n=2 confirmation for both models, below.
 
 ## Why this version exists
 
@@ -220,6 +220,116 @@ trick, and not infra-confounded.
   (`20 == 15`), not a timing-sensitive or statistical check — no
   ambiguity about whether this is a false positive.
 
+## Second-round evidence: n=2 for both target models
+
+Run 2026-07-14, via the real Harbor CLI, `--env-file` pointing at Anthropic-
+and OpenAI-shaped credentials backed by a single OpenRouter key (native
+Anthropic/OpenAI credits were not available for this round — see
+Methodology note below). Four trials, two per model, all against the
+unmodified current v3 code:
+
+| Job | Agent / model | `overall` | `functional_correctness` | `constraint_satisfaction` | `robustness` | `artifact_quality` | Steps | Cost | Wall time |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `2026-07-14__12-59-43` | claude-code / claude-opus-4-7 | 0.875 | 1.0 | 0.5 | 1.0 | 1.0 | 47 | $2.34 | 11m |
+| `2026-07-14__13-12-06` | claude-code / claude-opus-4-7 | 0.875 | 1.0 | 0.5 | 1.0 | 1.0 | 47 | $2.07 | 8m39s |
+| `2026-07-14__12-25-04` | codex / gpt-5.5 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 24 | $0.99 | 4m14s |
+| `2026-07-14__13-20-54` | codex / gpt-5.5 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 17 | $0.68 | 3m53s |
+
+### Opus 4.7: identical failure, twice, independently
+
+Both new Opus trials reproduce the exact same failure shape as the
+original `17-30-20` trial — bugs 1+2 fixed (in both cases with a
+per-`job_id` wait/leader mechanism, not a flat lock), bug 3/4 fails on
+the identical single assertion, every time:
+
+```
+FAILED test_reorder_snapshot_uses_per_sku_safety_stock_floor
+assert 20 == 15
+```
+
+And the root cause is the same *class* of mistake in both trials —
+`reorder_snapshot()` is implemented correctly (real per-SKU lookup, not
+the flat-constant trap), but the constructor's safety-floor argument is
+optional and defaults to empty, so it's never populated unless a caller
+explicitly passes it in:
+
+```python
+# job 12-59-43
+def __init__(self, initial_qty: dict, safety_floors: dict | None = None):
+    self._safety_floors = dict(safety_floors) if safety_floors else {}
+
+# job 13-12-06
+def __init__(self, initial_qty: dict, safety_stock: Optional[dict] = None):
+    self._safety_stock = dict(safety_stock or {})
+```
+
+Different variable names, same structural gap: nothing in either fix
+ever reads `ops/safety_stock_floors.json` itself, so the only path that
+sees real floors is one where a caller manually supplies them — which is
+also how each trial verified its own fix (see the original `17-30-20`
+write-up above). Three-for-three now on this exact failure mode is
+strong evidence this isn't a fluke.
+
+### GPT-5.5: two clean passes, and it's not a lucky one-shot
+
+Both codex trials pass `1.0` outright, and both close the exact gap Opus
+misses by having `Inventory` load the real floors itself when no
+override is given, instead of trusting a caller to supply them:
+
+```python
+# job 12-25-04 (and the same pattern in 13-20-54)
+_SAFETY_STOCK_FLOORS_PATH = Path(__file__).resolve().parents[1] / "ops" / "safety_stock_floors.json"
+
+def __init__(self, initial_qty: dict, safety_stock_floors: dict | None = None):
+    self._safety_stock_floors = (
+        dict(safety_stock_floors)
+        if safety_stock_floors is not None
+        else self._load_safety_stock_floors()
+    )
+```
+
+Neither trial one-shotted it blindly, per the full trajectories:
+
+- **`12-25-04` (24 steps):** read the entire repo and all of `ops/`
+  first, diffed `ops/system_of_record_snapshot.json` against
+  `data/initial_inventory.json` itself to rule out the stale-snapshot
+  theory, wrote its own reproducer, then implemented the fix plus its own
+  regression tests. Verified at 1 and 96 workers, then ran a synthetic
+  peak-scale throughput check. It then **refactored its own already-passing
+  fix** to simplify the duplicate-wait path — that refactor introduced an
+  ambiguity between "cached" and "in-flight" states, which it caught
+  itself, corrected, and re-verified (full suite + 96-worker replay +
+  throughput check again) before writing `REPORT.md`, then ran the test
+  suite one final time "so the final status is based on the current
+  code."
+- **`13-20-54` (17 steps):** same shape at smaller scale — implemented
+  the fix, caught a typo in its own ad hoc stress-check script mid-run
+  and fixed it before trusting the result, verified at 96 workers, then
+  re-ran the test suite once more after writing the report.
+
+That re-verify-after-every-change habit — including changes made to its
+own already-passing code — is precisely the discipline missing from the
+Opus trials, which verified once, with a hand-fed input, and stopped.
+
+### Methodology note: OpenRouter-routed credentials
+
+This round used a single OpenRouter API key rather than native
+Anthropic/OpenAI credentials (native credits weren't available for this
+round). `claude-code` was pointed at OpenRouter's Anthropic-compatible
+endpoint (`ANTHROPIC_BASE_URL=https://openrouter.ai/api`); `codex`
+required a local patch to Harbor's `agents/installed/codex.py` — its
+stock `openai_base_url` config write only redirects the reserved
+built-in `openai` provider, not third-party routers, so a proper
+`[model_providers.openrouter]` block (`wire_api = "responses"`,
+`requires_openai_auth = false`) was added to actually route `codex`
+through OpenRouter instead of silently falling back to a real,
+unauthenticated `api.openai.com` call. Both models are confirmed to be
+the real target models (`anthropic/claude-opus-4.7`, `openai/gpt-5.5`)
+via OpenRouter's own response metadata, not a substitute model. This is
+disclosed here in the interest of full reproducibility — a rerun against
+native Anthropic/OpenAI endpoints would be the cleaner methodology if
+credits become available.
+
 ## Provenance verification performed
 
 Checked via web search and direct inspection before finalizing this
@@ -237,9 +347,10 @@ to.
 ## Limitations
 
 - Two prior versions of this task (see "Why this version exists" above)
-  were both solved cleanly by the target model — v3's real trial (above)
-  did produce a genuine failure, but this is n=1; a second independent
-  trial would strengthen confidence that this isn't a fluke.
+  were both solved cleanly by the target model — v3 now has three
+  independent Opus 4.7 trials, all failing the identical bug 3/4 check,
+  and two independent GPT-5.5 trials, both passing cleanly — so the n=1
+  fluke concern from the first round is resolved.
 - The nested bug (3+4) is graded entirely by a deterministic unit test
   (`test_reorder_snapshot_uses_per_sku_safety_stock_floor`), not a
   stress/statistical check — simpler and safer to calibrate under time
@@ -247,5 +358,8 @@ to.
   verification-under-uncertainty the way the concurrency bugs do.
 - `task.toml`'s `[verifier]`/`[environment]` `network_mode` is `"public"`,
   not `"no-network"` — not yet tightened.
-- `.env` (an unused, unreferenced API key) has not yet been removed from
-  the task directory.
+- The second round of trials was run via OpenRouter rather than native
+  Anthropic/OpenAI credentials, and required a local Harbor patch to get
+  `codex` routing through it correctly (see Methodology note above) — not
+  a task-design issue, but worth re-running against native endpoints if
+  credits become available, as the cleaner methodology.
