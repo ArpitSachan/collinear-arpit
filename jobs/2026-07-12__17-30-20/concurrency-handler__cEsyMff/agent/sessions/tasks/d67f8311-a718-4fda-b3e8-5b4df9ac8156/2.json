@@ -1,9 +1,0 @@
-{
-  "id": "2",
-  "subject": "Reproduce drift with concurrency",
-  "description": "Write a reproduction script to demonstrate drift under peak-load concurrency (both directions).",
-  "activeForm": "Reproducing drift",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

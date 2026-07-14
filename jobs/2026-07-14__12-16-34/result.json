@@ -1,0 +1,67 @@
+{
+    "id": "68adc8f0-8a9b-44d4-ba26-49846d2aad12",
+    "started_at": "2026-07-14T12:16:35.172404",
+    "updated_at": "2026-07-14T12:17:49.511560",
+    "finished_at": "2026-07-14T12:17:49.511560",
+    "n_total_trials": 1,
+    "stats": {
+        "n_completed_trials": 1,
+        "n_errored_trials": 1,
+        "n_running_trials": 0,
+        "n_pending_trials": 0,
+        "n_cancelled_trials": 0,
+        "n_retries": 0,
+        "evals": {
+            "codex__gpt-5.5-high__adhoc": {
+                "n_trials": 1,
+                "n_errors": 1,
+                "metrics": [
+                    {
+                        "artifact_quality": 0.0,
+                        "constraint_satisfaction": 0.0,
+                        "functional_correctness": 0.0,
+                        "overall": 0.25,
+                        "robustness": 1.0
+                    }
+                ],
+                "pass_at_k": {},
+                "reward_stats": {
+                    "overall": {
+                        "0.25": [
+                            "concurrency-handler__cDxQ4Mm"
+                        ]
+                    },
+                    "functional_correctness": {
+                        "0.0": [
+                            "concurrency-handler__cDxQ4Mm"
+                        ]
+                    },
+                    "constraint_satisfaction": {
+                        "0.0": [
+                            "concurrency-handler__cDxQ4Mm"
+                        ]
+                    },
+                    "robustness": {
+                        "1.0": [
+                            "concurrency-handler__cDxQ4Mm"
+                        ]
+                    },
+                    "artifact_quality": {
+                        "0.0": [
+                            "concurrency-handler__cDxQ4Mm"
+                        ]
+                    }
+                },
+                "exception_stats": {
+                    "NonZeroAgentExitCodeError": [
+                        "concurrency-handler__cDxQ4Mm"
+                    ]
+                }
+            }
+        },
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null
+    }
+}

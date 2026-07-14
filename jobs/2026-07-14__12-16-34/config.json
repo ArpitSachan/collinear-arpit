@@ -1,0 +1,18 @@
+{
+    "job_name": "2026-07-14__12-16-34",
+    "agents": [
+        {
+            "name": "codex",
+            "model_name": "gpt-5.5-high"
+        }
+    ],
+    "tasks": [
+        {
+            "path": "concurrency-handler"
+        }
+    ],
+    "artifacts": [
+        "/app/REPORT.md",
+        "/app/store/inventory.py"
+    ]
+}

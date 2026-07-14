@@ -28,9 +28,8 @@ rather than only ever adding new, independent patches:
    event) passes `available >= qty` trivially, and for negative `qty`
    specifically, *increases* stock via `available - qty`. This is a plain
    correctness/validation gap, unrelated to concurrency.
-
-3. **Missing `reorder_snapshot()`, then a nested trap** (no concurrency
-   required): `Inventory` never exposes `reorder_snapshot()` at all —
+3. **Missing** `reorder_snapshot()`**, then a nested trap** (no concurrency
+  required): `Inventory` never exposes `reorder_snapshot()` at all —
    `README.md`'s contract requires it to report *sellable* stock
    (physical minus a per-SKU safety-stock floor) for the automated
    reordering system, so without it the reordering system would be
@@ -73,9 +72,9 @@ Solving this requires several linked steps, not one command:
 | 4. **Diagnose**  | both actual root causes — a correctly-instantiated, correctly-scoped lock that's still missing one re-check is easy to skim past as "this already looks synchronized."              |
 | 5. **Fix**       | both, keeping the lock's critical section narrow enough to preserve throughput under the simulated downstream I/O delay.                                                            |
 | 6. **Verify**    | at the scale the service actually runs at (`ops/autoscaler_log.txt`'s peak, not the bundled small sample), across multiple independent runs, without regressing the existing suite. |
-| 7. **Implement** | `reorder_snapshot()` per `README.md`'s contract; the first reasonable attempt (one flat safety-stock constant) is wrong for one SKU. |
-| 8. **Revise**    | that same implementation — not add a new check on top — once `ops/safety_stock_floors.json` reveals floors aren't uniform. |
-| 9. **Report**    | all root causes and verification evidence in `REPORT.md`.                                                                                                                          |
+| 7. **Implement** | `reorder_snapshot()` per `README.md`'s contract; the first reasonable attempt (one flat safety-stock constant) is wrong for one SKU.                                                |
+| 8. **Revise**    | that same implementation — not add a new check on top — once `ops/safety_stock_floors.json` reveals floors aren't uniform.                                                          |
+| 9. **Report**    | all root causes and verification evidence in `REPORT.md`.                                                                                                                           |
 
 
 ---
@@ -89,7 +88,7 @@ Solving this requires several linked steps, not one command:
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Solvable**     | Both bugs are well-defined and independently fixable; the oracle (`solution/solve.sh`) fixes both in one file and passes cleanly. Everything needed is in the provided files — see `instruction.md`.                                                                                                                                                                                                     |
 | **Unambiguous**  | `instruction.md` states the exact deliverable (fixed `store/`, plus `/app/REPORT.md`), the constraints (no regression, no serialize-everything shortcut, no network), and points to `ops/` for the real-world scale signal — it just doesn't hand over the number directly.                                                                                                                              |
-| **Substantive**  | Failure here reflects real capability gaps: recognizing a lock that's *almost* correct except for one missing re-check, not conflating co-occurring bugs into one fix, verifying against production scale instead of the bundled sample, and — for the nested bug — noticing a first fix is only 80% right and revising it instead of declaring victory once tests go green.                                                                                                                                                         |
+| **Substantive**  | Failure here reflects real capability gaps: recognizing a lock that's *almost* correct except for one missing re-check, not conflating co-occurring bugs into one fix, verifying against production scale instead of the bundled sample, and — for the nested bug — noticing a first fix is only 80% right and revising it instead of declaring victory once tests go green.                             |
 | **Reproducible** | Pinned base image (`ubuntu:24.04` + `pytest==8.4.1`), no secrets, no external services required at runtime. Verified with a from-scratch `docker build` + container runs (see Reproduction below).                                                                                                                                                                                                       |
 | **Non-brittle**  | The verifier never does string/format matching. It black-box imports the candidate's `store` package and checks behavior: exact-match final inventory against an independently precomputed ground truth, a deterministic barrier-synchronized duplicate-delivery probe, wall-clock throughput, and the *verifier's own pristine copy* of the regression suite (never the agent's copy in `/app/tests/`). |
 
@@ -111,7 +110,7 @@ weighting and logic are in `tests/aggregate_reward.py`; summary:
 | Metric                    | What it measures                                                                                                                                                                                                                                                                         | Weight |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | `functional_correctness`  | Fraction of 8 independent 96-worker stress runs (1000 unique jobs + ~10% redelivered duplicates + ~5% malformed `qty<=0` deliveries, `tests/fixtures/jobs_stress.jsonl`, hidden from the agent) whose final per-SKU inventory exactly matches an independently precomputed ground truth. | 0.40   |
-| `constraint_satisfaction` | 0.5 × (verifier's own regression suite — including the `qty<=0` rejection test and the per-SKU `reorder_snapshot()` test — still passes) + 0.5 × (fraction of 30 barrier-synchronized duplicate-delivery trials correctly deduped).                                                                                                  | 0.25   |
+| `constraint_satisfaction` | 0.5 × (verifier's own regression suite — including the `qty<=0` rejection test and the per-SKU `reorder_snapshot()` test — still passes) + 0.5 × (fraction of 30 barrier-synchronized duplicate-delivery trials correctly deduped).                                                      | 0.25   |
 | `robustness`              | Fraction of the 8 stress runs completing within a 5s budget.                                                                                                                                                                                                                             | 0.25   |
 | `artifact_quality`        | Programmatic (non-LLM-judge) heuristic on `/app/REPORT.md`: length gate + keyword coverage across locking / idempotency / performance concepts.                                                                                                                                          | 0.10   |
 
@@ -134,22 +133,22 @@ Measured locally (see Reproduction below) to confirm the verifier isn't a
 false positive/negative across six distinct code states:
 
 
-| Candidate code                                                              | overall | functional_correctness | constraint_satisfaction | robustness | artifact_quality |
-| --------------------------------------------------------------------------- | ------- | ---------------------- | ----------------------- | ---------- | ---------------- |
-| Untouched buggy seed (both bugs present)                                    | 0.25    | 0.0                    | 0.0                     | 1.0        | 0.0              |
-| Decoy-only fix (qty validated, redelivery race still present)               | 0.375   | 0.0                    | 0.5                     | 1.0        | 0.0              |
-| Race-only fix (idempotency re-check added, qty still unvalidated)           | 0.375   | 0.0                    | 0.5                     | 1.0        | 0.0              |
-| "Wrap the whole method in one lock" (both bugs fixed, but fully serialized) | 0.65    | 1.0                    | 1.0                     | 0.0        | 0.0              |
-| Bugs 1+2 fixed, `reorder_snapshot()` added with one flat constant (bug-4 trap) | n/a\*   | —                      | —                       | —          | —                |
-| Oracle fix (`solution/solve.sh`)                                            | 1.0     | 1.0                    | 1.0                     | 1.0        | 1.0              |
+| Candidate code                                                                 | overall | functional_correctness | constraint_satisfaction | robustness | artifact_quality |
+| ------------------------------------------------------------------------------ | ------- | ---------------------- | ----------------------- | ---------- | ---------------- |
+| Untouched buggy seed (both bugs present)                                       | 0.25    | 0.0                    | 0.0                     | 1.0        | 0.0              |
+| Decoy-only fix (qty validated, redelivery race still present)                  | 0.375   | 0.0                    | 0.5                     | 1.0        | 0.0              |
+| Race-only fix (idempotency re-check added, qty still unvalidated)              | 0.375   | 0.0                    | 0.5                     | 1.0        | 0.0              |
+| "Wrap the whole method in one lock" (both bugs fixed, but fully serialized)    | 0.65    | 1.0                    | 1.0                     | 0.0        | 0.0              |
+| Bugs 1+2 fixed, `reorder_snapshot()` added with one flat constant (bug-4 trap) | n/a     | —                      | —                       | —          | —                |
+| Oracle fix (`solution/solve.sh`)                                               | 1.0     | 1.0                    | 1.0                     | 1.0        | 1.0              |
 
-\* Not run through the full `reward.json` — measured directly against
+
+ Not run through the full `reward.json` — measured directly against
 the verifier's regression suite to isolate the trap: it fails exactly
 one test (`test_reorder_snapshot_uses_per_sku_safety_stock_floor`, on
 exactly the one SKU with a non-default floor), 6/7 tests otherwise
 passing, with both concurrency bugs (already fixed in this variant)
 unaffected.
-
 
 The two partial-fix rows land on the same `overall` (0.375) for different
 reasons — `constraint_satisfaction`'s breakdown (visible in

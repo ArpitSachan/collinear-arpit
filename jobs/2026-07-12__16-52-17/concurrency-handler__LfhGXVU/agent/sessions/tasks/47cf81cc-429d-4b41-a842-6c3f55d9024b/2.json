@@ -1,8 +1,0 @@
-{
-  "id": "2",
-  "subject": "Reproduce both drift symptoms",
-  "description": "Reproduce both drift symptoms locally (over-count at 1 worker, under-count at high concurrency)",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

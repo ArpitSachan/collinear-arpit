@@ -1,8 +1,0 @@
-{
-  "id": "4",
-  "subject": "Implement the fix in store/",
-  "description": "Fix without regressing tests or throughput",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

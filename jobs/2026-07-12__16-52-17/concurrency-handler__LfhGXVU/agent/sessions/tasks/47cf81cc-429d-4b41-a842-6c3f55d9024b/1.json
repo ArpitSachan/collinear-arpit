@@ -1,8 +1,0 @@
-{
-  "id": "1",
-  "subject": "Investigate incident data",
-  "description": "Investigate incident: read ops/, inspect data, understand what drift looks like",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

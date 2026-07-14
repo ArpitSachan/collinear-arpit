@@ -1,9 +1,0 @@
-{
-  "id": "4",
-  "subject": "Verify fix and write REPORT.md",
-  "description": "Run existing test suite plus reproduction; measure throughput hasn't regressed. Write REPORT.md.",
-  "activeForm": "Verifying and reporting",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

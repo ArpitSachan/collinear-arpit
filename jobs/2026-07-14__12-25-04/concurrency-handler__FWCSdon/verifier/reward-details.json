@@ -1,0 +1,71 @@
+{
+  "regression_score": 1.0,
+  "duplicate_race": {
+    "score": 1.0,
+    "trials": 30,
+    "failures": 0
+  },
+  "stress": {
+    "trials": [
+      {
+        "correct": true,
+        "elapsed_sec": 0.2493441104888916
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.25049614906311035
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24578332901000977
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24545860290527344
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24520277976989746
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24577927589416504
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24991512298583984
+      },
+      {
+        "correct": true,
+        "elapsed_sec": 0.24407124519348145
+      }
+    ],
+    "expected_final_inventory": {
+      "SKU-ANCHOR-01": 74,
+      "SKU-BOLT-14": 78,
+      "SKU-CABLE-9": 74,
+      "SKU-DRUM-3": 78,
+      "SKU-EDGE-77": 75
+    },
+    "time_budget_sec": 5.0,
+    "num_workers": 96,
+    "functional_correctness": 1.0,
+    "robustness": 1.0
+  },
+  "artifact": {
+    "score": 1.0,
+    "word_count": 452,
+    "length_ok": true,
+    "concept_hits": {
+      "locking": true,
+      "idempotency": true,
+      "performance": true
+    }
+  },
+  "weights": {
+    "functional_correctness": 0.4,
+    "constraint_satisfaction": 0.25,
+    "robustness": 0.25,
+    "artifact_quality": 0.1
+  }
+}

@@ -1,0 +1,99 @@
+.....FF                                                                  [100%]
+=================================== FAILURES ===================================
+_____________ test_malformed_qty_is_rejected_without_side_effects ______________
+/tests/fixtures/test_inventory_regresssion.py:61: in test_malformed_qty_is_rejected_without_side_effects
+    assert not negative.approved
+E   AssertionError: assert not True
+E    +  where True = ReserveResult(job_id='j-neg', sku='WIDGET', qty=-3, approved=True).approved
+____________ test_reorder_snapshot_uses_per_sku_safety_stock_floor _____________
+/tests/fixtures/test_inventory_regresssion.py:75: in test_reorder_snapshot_uses_per_sku_safety_stock_floor
+    reorder = store.reorder_snapshot()
+              ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'Inventory' object has no attribute 'reorder_snapshot'
+=========================== short test summary info ============================
+FAILED ../tests/fixtures/test_inventory_regresssion.py::test_malformed_qty_is_rejected_without_side_effects
+FAILED ../tests/fixtures/test_inventory_regresssion.py::test_reorder_snapshot_uses_per_sku_safety_stock_floor
+2 failed, 5 passed in 0.67s
+duplicate_race: 0/30 trials correctly deduped
+stress trial 0: correct=False elapsed=0.28s
+stress trial 1: correct=False elapsed=0.28s
+stress trial 2: correct=False elapsed=0.30s
+stress trial 3: correct=False elapsed=0.54s
+stress trial 4: correct=False elapsed=0.36s
+stress trial 5: correct=False elapsed=0.30s
+stress trial 6: correct=False elapsed=0.28s
+stress trial 7: correct=False elapsed=0.26s
+functional_correctness=0.0 robustness=1.0
+grade_report: {'score': 0.0, 'reason': 'REPORT.md not found'}
+{
+  "overall": 0.25,
+  "functional_correctness": 0.0,
+  "constraint_satisfaction": 0.0,
+  "robustness": 1.0,
+  "artifact_quality": 0.0,
+  "details": {
+    "regression_score": 0.0,
+    "duplicate_race": {
+      "score": 0.0,
+      "trials": 30,
+      "failures": 30
+    },
+    "stress": {
+      "trials": [
+        {
+          "correct": false,
+          "elapsed_sec": 0.2768435478210449
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.27933526039123535
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.3031601905822754
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.5369706153869629
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.36365747451782227
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.3044281005859375
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.2836439609527588
+        },
+        {
+          "correct": false,
+          "elapsed_sec": 0.2642204761505127
+        }
+      ],
+      "expected_final_inventory": {
+        "SKU-ANCHOR-01": 74,
+        "SKU-BOLT-14": 78,
+        "SKU-CABLE-9": 74,
+        "SKU-DRUM-3": 78,
+        "SKU-EDGE-77": 75
+      },
+      "time_budget_sec": 5.0,
+      "num_workers": 96,
+      "functional_correctness": 0.0,
+      "robustness": 1.0
+    },
+    "artifact": {
+      "score": 0.0,
+      "reason": "REPORT.md not found"
+    },
+    "weights": {
+      "functional_correctness": 0.4,
+      "constraint_satisfaction": 0.25,
+      "robustness": 0.25,
+      "artifact_quality": 0.1
+    }
+  }
+}

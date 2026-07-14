@@ -1,8 +1,0 @@
-{
-  "id": "3",
-  "subject": "Diagnose root cause(s)",
-  "description": "Identify concurrency issues and any bad data in seed/jobs",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

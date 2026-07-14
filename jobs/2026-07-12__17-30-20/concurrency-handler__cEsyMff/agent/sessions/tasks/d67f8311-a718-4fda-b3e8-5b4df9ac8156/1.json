@@ -1,9 +1,0 @@
-{
-  "id": "1",
-  "subject": "Investigate inventory drift root cause",
-  "description": "Read all repo files, ops artifacts, and inventory logic to identify the sources of drift (double-decrement + phantom stock).",
-  "activeForm": "Investigating drift causes",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

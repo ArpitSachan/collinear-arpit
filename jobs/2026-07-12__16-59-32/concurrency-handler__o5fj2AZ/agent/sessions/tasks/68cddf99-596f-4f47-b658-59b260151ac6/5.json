@@ -1,8 +1,0 @@
-{
-  "id": "5",
-  "subject": "Verify fix and write REPORT.md",
-  "description": "Run tests, run concurrent repro, then document",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

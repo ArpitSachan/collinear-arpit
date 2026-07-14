@@ -1,0 +1,16 @@
+{
+    "task": {
+        "path": "concurrency-handler"
+    },
+    "trial_name": "concurrency-handler__FWCSdon",
+    "trials_dir": "jobs/2026-07-14__12-25-04",
+    "agent": {
+        "name": "codex",
+        "model_name": "gpt-5.5"
+    },
+    "artifacts": [
+        "/app/REPORT.md",
+        "/app/store/inventory.py"
+    ],
+    "job_id": "703708cc-987a-4def-a012-68deba7d749f"
+}

@@ -1,8 +1,0 @@
-{
-  "id": "4",
-  "subject": "Verify fix and write report",
-  "description": "Verify fix passes existing tests and eliminates drift under high concurrency without hurting throughput; write REPORT.md",
-  "status": "pending",
-  "blocks": [],
-  "blockedBy": []
-}
